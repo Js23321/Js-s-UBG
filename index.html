@@ -4,9 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Js's Unblocked Games</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Js's Unblocked Games</h1>
-    <p>Welcome to Js's Unblocked Games! Here you can find a variety of games that are unblocked and ready to play. Enjoy your gaming experience!</p>
+    <header>
+        <h1 class="title">Js's Unblocked Games</h1>
+        <p>Welcome to Js's Unblocked Games! Here you can find a variety of unblocked games ready to play. Click any card to open the game in a new tab.</p>
+    </header>
+
+    <section class="games-section">
+        <div class="cards" id="cards-container">
+            <!-- Cards will be generated here by JavaScript -->
+        </div>
+    </section>
+
+    <script src="games.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('cards-container');
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'lesson-card';
+                card.onclick = () => window.open(game.url, '_blank');
+                
+                const img = document.createElement('img');
+                img.src = game.image;
+                img.alt = game.title;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                
+                const title = document.createElement('h3');
+                title.className = 'lesson-title';
+                title.textContent = game.title;
+                
+                overlay.appendChild(title);
+                card.appendChild(img);
+                card.appendChild(overlay);
+                container.appendChild(card);
+            });
+        });
+    </script>
 </body>
 </html>
