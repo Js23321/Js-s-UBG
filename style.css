@@ -100,3 +100,10 @@ header p {
   text-align: center;
 }
 
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #090909;
+  color: #c9c2b7;
+  font-size: 0.9rem;
+}
