@@ -7,8 +7,37 @@ body {
 }
 
 /* NAVIGATION */
+/* Top nav buttons and link styling for the SPA header */
 nav {
-  /* styles for nav go here */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 20px 8px;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #f6f4ef;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-button:hover,
+.nav-button:focus,
+.nav-button.active {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #1585c2;
 }
 
 /* HEADER */
@@ -38,10 +67,22 @@ header p {
 }
 
 /* SEARCH BAR */
+/* Search field inside the Home section */
 .search-wrapper {
   display: flex;
   justify-content: center;
   margin: 16px auto 4px;
+}
+
+/* Games loaded text */
+.games-loaded {
+  margin: 20px auto 20px;
+  max-width: 420px;
+  color: #c9c2b7;
+  font-size: 0.95rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+  opacity: 0.88;
 }
 
 #searchBar {
@@ -66,7 +107,63 @@ header p {
   border-color: #1585c2;
 }
 
+/* PAGE SECTION SHOW/HIDE */
+/* Only the active section is visible at any time */
+.page-section {
+  display: none;
+}
+
+.page-section.active {
+  display: block;
+}
+
+/* SETTINGS / PARTNERS PANELS */
+.settings-panel,
+.partners-panel {
+  max-width: 900px;
+  margin: 0 auto 40px;
+  padding: 24px 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.settings-panel h2,
+.partners-panel h2 {
+  margin-top: 0;
+  color: #f6f4ef;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+  color: #c9c2b7;
+}
+
+.partner-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.partner-list li {
+  margin-bottom: 10px;
+}
+
+.partner-list a {
+  color: #f6f4ef;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(246, 244, 239, 0.4);
+}
+
+.partner-list a:hover {
+  color: #90caff;
+}
+
 /* GAME CARDS GRID */
+/* Container and layout for the game cards on the Home section */
 .cards {
   display: flex;
   flex-wrap: wrap;

@@ -10,26 +10,62 @@
     <script src="app.js"></script>
 </head>
 <body>
+    <!-- MAIN NAVIGATION: SPA links for Home, Settings, Partners, + footer contact -->
     <nav>
-        <a class="nav-button" href="index.html">Home</a>
-        <a class="nav-button" href="settings.html">Settings</a>
+        <a class="nav-button active" href="#home" data-page="home">Home</a>
+        <a class="nav-button" href="#settings" data-page="settings">Settings</a>
+        <a class="nav-button" href="#partners" data-page="partners">Partners</a>
         <a class="nav-button" href="#contact">Contact</a>
     </nav>
-    
-    <header>
-        <h1 class="title">Js's Unblocked Games</h1>
-        <p>Welcome to Js's Unblocked Games! Here you can find a variety of unblocked games ready to play. Click any card to open the game in a new tab.</p>
-        <div class="search-wrapper">
-            <input type="text" id="searchBar" placeholder="Search games..." autocomplete="off" />
-        </div>
-    </header>
-    
-    <section class="games-section">
-        <div class="cards" id="cards-container">
-            <!--reminder:javascript card here-->
+
+    <!-- HOME SECTION: main game list, search bar, and game count -->
+    <section id="home-section" class="page-section active">
+        <header>
+            <h1 class="title">Js's Unblocked Games</h1>
+            <p>Welcome to Js's Unblocked Games! Here you can find a variety of unblocked games ready to play. Click any card to open the game in a new tab.</p>
+            <div class="search-wrapper">
+                <input type="text" id="searchBar" placeholder="Search games..." autocomplete="off" />
+            </div>
+            <div class="games-loaded"></div>
+        </header>
+
+        <section class="games-section">
+            <div class="cards" id="cards-container">
+                <!-- GAME CARDS: populated by app.js from games.js -->
+            </div>
+        </section>
+    </section>
+
+    <!-- SETTINGS SECTION: shown when user clicks Settings -->
+    <section id="settings-section" class="page-section">
+        <div class="settings-panel">
+            <h2>Settings</h2>
+            <p>Adjust your game page settings without leaving the site.</p>
+            <label class="settings-row">
+                <input type="checkbox" checked enabled>
+                Enable game sound (placeholder)
+            </label>
+            <label class="settings-row">
+                <input type="checkbox" checked enabled>
+                Enable image zoom on hover (placeholder)
+            </label>
         </div>
     </section>
-    
+
+    <!-- PARTNERS SECTION: shown when user clicks Partners -->
+    <section id="partners-section" class="page-section">
+        <div class="partners-panel">
+            <h2>Partners</h2>
+            <p>Our trusted partners and sponsors.</p>
+            <ul class="partner-list">
+                <li><a href="https://example.com" target="_blank" rel="noreferrer">Example Games</a></li>
+                <li><a href="https://example.com" target="_blank" rel="noreferrer">FunZone Studio</a></li>
+                <li><a href="https://example.com" target="_blank" rel="noreferrer">School Playgrounds</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FOOTER: contains contact and copyright -->
     <footer>
         <p id="contact">hitadolf320@gmail.com</p>
         <p>&copy; 2026 Js's Unblocked Games. All rights reserved.</p>
