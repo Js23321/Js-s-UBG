@@ -1,3 +1,4 @@
+// Card Creator
 document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('cards-container');
     games.forEach(game => {
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const overlay = document.createElement('div');
         overlay.className = 'card-overlay';
+        card.setAttribute("data-title", game.title.toLowerCase());
         
         const title = document.createElement('h3');
         title.className = 'lesson-title';
@@ -29,5 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
         card.appendChild(img);
         card.appendChild(overlay);
         container.appendChild(card);
+    });
+    // Search Bar
+    const searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", function () {
+        const query = searchBar.value.toLowerCase().trim();
+        document.querySelectorAll(".lesson-card").forEach(function (card) {
+            const title = card.getAttribute("data-title") || "";
+            card.style.display = title.startsWith(query) ? "" : "none";
+        });
     });
 });
