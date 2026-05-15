@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Show how many games are loaded
-    document.querySelector('.games-loaded').textContent = `(${games.length} games loaded)`;
+    document.querySelector('.games-loaded').textContent = `(${games.length}/${games.length} games loaded)`;
 
     // Search behavior for the Home game cards
     const searchBar = document.getElementById('searchBar');
