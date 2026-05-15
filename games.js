@@ -18,5 +18,15 @@ const games = [
     title: "Space Waves",
     url: "/games/4.html",
     image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/4.jpg"
+  },
+  {
+    title: "Crossy Road",
+    url: "/games/5.html",
+    image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/5.jpg"
+  },
+  {
+    title: "Drive Mad",
+    url: "/games/6.html",
+    image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/6.jpg"
   }
 ];
