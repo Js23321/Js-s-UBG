@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Classroom</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="/images/cuh.png" type="image/png">
+    <link id="favicon" rel="icon" href="/images/cuh.png" type="image/png">
     <script src="games.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
+
     <!-- MAIN NAVIGATION: SPA links for Home, Settings, Partners, + footer contact -->
     <nav>
         <a class="nav-button active" href="#home" data-page="home">Home</a>
@@ -19,22 +20,19 @@
     </nav>
 
     <!-- HOME SECTION: main game list, search bar, and game count -->
-        
-        <section id="home-section" class="page-section active">
-            <header class="header-wrapper">
-               <h1 class="title">Js's Unblocked Games</h1>
-               <p>Welcome to Js's Unblocked Games! Here you can find a variety of unblocked games ready to play. Click any card to open the game in a new tab.</p>
-            </header>
+    <section id="home-section" class="page-section active">
+        <header class="header-wrapper">
+            <h1 class="title">Js's Unblocked Games</h1>
+            <p>Welcome to Js's Unblocked Games! Here you can find a variety of unblocked games ready to play. Click any card to open the game in a new tab.</p>
+        </header>
 
-        
         <div class="cards-wrapper">
-            
             <div class="search-wrapper">
                 <input type="text" id="searchBar" placeholder="Search games..." autocomplete="off" />
             </div>
-            
+
             <div class="games-loaded"></div>
-            
+
             <div class="cards" id="cards-container">
                 <!-- GAME CARDS: populated by app.js from games.js -->
             </div>
@@ -45,15 +43,76 @@
     <section id="settings-section" class="page-section">
         <div class="settings-panel">
             <h2>Settings</h2>
-            <p>Adjust your game page settings without leaving the site.</p>
-            <label class="settings-row">
-                <input type="checkbox" checked enabled>
-                Enable game sound (placeholder)
-            </label>
-            <label class="settings-row">
-                <input type="checkbox" checked enabled>
-                Enable image zoom on hover (placeholder)
-            </label>
+
+            <!-- Theme -->
+            <div class="settings-group">
+                <label class="settings-label">Theme</label>
+                <div class="theme-buttons">
+                    <button class="theme-btn" data-theme="dark">Dark</button>
+                    <button class="theme-btn" data-theme="light">Light</button>
+                    <button class="theme-btn" data-theme="amoled">AMOLED</button>
+                    <button class="theme-btn" data-theme="forest">Forest</button>
+                    <button class="theme-btn" data-theme="sunset">Sunset</button>
+                </div>
+            </div>
+
+            <!-- Search mode -->
+            <div class="settings-group">
+                <label class="settings-label">Search mode</label>
+                <div class="toggle-row">
+                    <span class="toggle-opt active" id="opt-starts">Starts with</span>
+                    <div class="toggle-switch" id="toggle-search">
+                        <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-opt" id="opt-contains">Contains</span>
+                </div>
+            </div>
+
+            <!-- Custom favicon -->
+            <div class="settings-group">
+                <label class="settings-label">Custom favicon URL</label>
+                <div class="input-row">
+                    <input type="text" id="set-favicon" placeholder="https://example.com/icon.png" />
+                    <button class="apply-btn" id="apply-favicon">Apply</button>
+                    <button class="reset-btn" id="reset-favicon">Reset</button>
+                </div>
+            </div>
+
+            <!-- Custom tab title -->
+            <div class="settings-group">
+                <label class="settings-label">Custom tab title</label>
+                <div class="input-row">
+                    <input type="text" id="set-title" placeholder="My Games Page" />
+                    <button class="apply-btn" id="apply-title">Apply</button>
+                    <button class="reset-btn" id="reset-title">Reset</button>
+                </div>
+            </div>
+
+            <!-- Font -->
+            <div class="settings-group">
+                <label class="settings-label">Font</label>
+                <select id="set-font">
+                    <option value="'Courier New', monospace">Courier New (default)</option>
+                    <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                    <option value="'Georgia', serif">Georgia</option>
+                    <option value="'Arial', sans-serif">Arial</option>
+                    <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                </select>
+            </div>
+
+            <!-- Open game mode -->
+            <div class="settings-group">
+                <label class="settings-label">Open game in</label>
+                <div class="toggle-row">
+                    <span class="toggle-opt active" id="opt-blank">about:blank</span>
+                    <div class="toggle-switch" id="toggle-openmode">
+                        <div class="toggle-knob"></div>
+                    </div>
+                    <span class="toggle-opt" id="opt-insite">In-site overlay</span>
+                </div>
+            </div>
+
+            <button id="reset-all" class="reset-all-btn">Reset all settings</button>
         </div>
     </section>
 
@@ -77,5 +136,12 @@
         <p id="contact">hitadolf320@gmail.com</p>
         <p>&copy; 2026 Js's Unblocked Games. All rights reserved.</p>
     </footer>
+
+    <!-- GAME OVERLAY: shown when open mode is set to in-site -->
+    <div id="game-overlay" style="display:none; position:fixed; inset:0; z-index:9999; background:#000;">
+        <button id="close-overlay" style="position:absolute; top:14px; right:18px; z-index:10000; background:rgba(255,255,255,0.1); border:1px solid #555; color:#fff; padding:8px 16px; border-radius:999px; cursor:pointer; font-family:inherit;">✕ Close</button>
+        <iframe id="game-frame" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
 </body>
 </html>
