@@ -1,12 +1,180 @@
-﻿// app.js: builds game cards, enables search, and handles single-page navigation
+﻿document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Build all game cards from games.js into the home section
-    const container = document.getElementById('cards-container');
-    games.forEach(game => {
-        const card = document.createElement('div');
-        card.className = 'lesson-card';
-        card.onclick = () => {
+    // ── SETTINGS STORE ──────────────────────────────────────────────
+    // Default values for every setting
+    const DEFAULTS = {
+        theme:      'dark',
+        searchMode: 'starts',
+        favicon:    '/images/cuh.png',
+        tabTitle:   'Home - Classroom',
+        font:       "'Courier New', monospace",
+        openMode:   'blank'
+    };
+
+    // Load saved settings from localStorage, fall back to defaults
+    function loadSettings() {
+        const saved = {};
+        for (const key in DEFAULTS) {
+            saved[key] = localStorage.getItem('cfg_' + key) ?? DEFAULTS[key];
+        }
+        return saved;
+    }
+
+    // Save a single setting to localStorage and update cfg
+    function saveSetting(key, value) {
+        cfg[key] = value;
+        localStorage.setItem('cfg_' + key, value);
+    }
+
+    const cfg = loadSettings();
+
+    // ── APPLY FUNCTIONS ──────────────────────────────────────────────
+    // Each function applies one setting to the page
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+    }
+
+    function applyFavicon(url) {
+        document.getElementById('favicon').href = url;
+    }
+
+    function applyTitle(title) {
+        document.title = title;
+    }
+
+    function applyFont(font) {
+        document.body.style.fontFamily = font;
+    }
+
+    function applySearchMode(mode) {
+        const toggle      = document.getElementById('toggle-search');
+        const optStarts   = document.getElementById('opt-starts');
+        const optContains = document.getElementById('opt-contains');
+        if (mode === 'contains') {
+            toggle.classList.add('on');
+            optContains.classList.add('active');
+            optStarts.classList.remove('active');
+        } else {
+            toggle.classList.remove('on');
+            optStarts.classList.add('active');
+            optContains.classList.remove('active');
+        }
+    }
+
+    function applyOpenMode(mode) {
+        const toggle    = document.getElementById('toggle-openmode');
+        const optBlank  = document.getElementById('opt-blank');
+        const optInsite = document.getElementById('opt-insite');
+        if (mode === 'insite') {
+            toggle.classList.add('on');
+            optInsite.classList.add('active');
+            optBlank.classList.remove('active');
+        } else {
+            toggle.classList.remove('on');
+            optBlank.classList.add('active');
+            optInsite.classList.remove('active');
+        }
+    }
+
+    // Apply all settings at once (used on page load and reset)
+    function applyAll() {
+        applyTheme(cfg.theme);
+        applyFavicon(cfg.favicon);
+        applyTitle(cfg.tabTitle);
+        applyFont(cfg.font);
+        applySearchMode(cfg.searchMode);
+        applyOpenMode(cfg.openMode);
+    }
+
+    applyAll();
+
+    // ── POPULATE SETTINGS UI ─────────────────────────────────────────
+    // Fill in saved values so the settings page shows current state
+    document.getElementById('set-favicon').value = cfg.favicon === DEFAULTS.favicon ? '' : cfg.favicon;
+    document.getElementById('set-title').value   = cfg.tabTitle === DEFAULTS.tabTitle ? '' : cfg.tabTitle;
+    document.getElementById('set-font').value    = cfg.font;
+
+    // Theme buttons
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            saveSetting('theme', btn.dataset.theme);
+            applyTheme(btn.dataset.theme);
+        });
+    });
+
+    // Search mode toggle
+    document.getElementById('toggle-search').addEventListener('click', () => {
+        const next = cfg.searchMode === 'starts' ? 'contains' : 'starts';
+        saveSetting('searchMode', next);
+        applySearchMode(next);
+    });
+
+    // Open mode toggle
+    document.getElementById('toggle-openmode').addEventListener('click', () => {
+        const next = cfg.openMode === 'blank' ? 'insite' : 'blank';
+        saveSetting('openMode', next);
+        applyOpenMode(next);
+    });
+
+    // Favicon apply / reset
+    document.getElementById('apply-favicon').addEventListener('click', () => {
+        const val = document.getElementById('set-favicon').value.trim();
+        if (val) { saveSetting('favicon', val); applyFavicon(val); }
+    });
+    document.getElementById('reset-favicon').addEventListener('click', () => {
+        saveSetting('favicon', DEFAULTS.favicon);
+        applyFavicon(DEFAULTS.favicon);
+        document.getElementById('set-favicon').value = '';
+    });
+
+    // Tab title apply / reset
+    document.getElementById('apply-title').addEventListener('click', () => {
+        const val = document.getElementById('set-title').value.trim();
+        if (val) { saveSetting('tabTitle', val); applyTitle(val); }
+    });
+    document.getElementById('reset-title').addEventListener('click', () => {
+        saveSetting('tabTitle', DEFAULTS.tabTitle);
+        applyTitle(DEFAULTS.tabTitle);
+        document.getElementById('set-title').value = '';
+    });
+
+    // Font select
+    document.getElementById('set-font').addEventListener('change', e => {
+        saveSetting('font', e.target.value);
+        applyFont(e.target.value);
+    });
+
+    // Reset all settings
+    document.getElementById('reset-all').addEventListener('click', () => {
+        for (const key in DEFAULTS) localStorage.removeItem('cfg_' + key);
+        Object.assign(cfg, DEFAULTS);
+        document.getElementById('set-favicon').value = '';
+        document.getElementById('set-title').value   = '';
+        document.getElementById('set-font').value    = DEFAULTS.font;
+        applyAll();
+    });
+
+    // ── GAME OVERLAY ─────────────────────────────────────────────────
+    const overlay   = document.getElementById('game-overlay');
+    const gameFrame = document.getElementById('game-frame');
+    const closeBtn  = document.getElementById('close-overlay');
+
+    // Close button hides the overlay and stops the game
+    closeBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+        gameFrame.src = '';
+    });
+
+    // Open a game either in about:blank or in the in-site overlay
+    function openGame(game) {
+        if (cfg.openMode === 'insite') {
+            gameFrame.src = game.url;
+            overlay.style.display = 'block';
+        } else {
             const win = window.open('about:blank');
             fetch(game.url + '?cb=' + Date.now())
                 .then(r => r.text())
@@ -15,80 +183,83 @@ document.addEventListener('DOMContentLoaded', function() {
                     win.document.write(html);
                     win.document.close();
                 });
-        };
+        }
+    }
 
-        const img = document.createElement('img');
-        img.src = game.image;
-        img.alt = game.title;
+    // ── BUILD GAME CARDS ─────────────────────────────────────────────
+    const container = document.getElementById('cards-container');
 
-        const overlay = document.createElement('div');
-        overlay.className = 'card-overlay';
-        card.setAttribute('data-title', game.title.toLowerCase());
+    function renderCards() {
+        container.innerHTML = '';
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'lesson-card';
+            card.setAttribute('data-title', game.title.toLowerCase());
+            card.onclick = () => openGame(game);
 
-        const title = document.createElement('h3');
-        title.className = 'lesson-title';
-        title.textContent = game.title;
+            const img = document.createElement('img');
+            img.src = game.image;
+            img.alt = game.title;
 
-        overlay.appendChild(title);
-        card.appendChild(img);
-        card.appendChild(overlay);
-        container.appendChild(card);
-    });
+            const overlay = document.createElement('div');
+            overlay.className = 'card-overlay';
 
-    // Show how many games are loaded
-    document.querySelector('.games-loaded').textContent = `(${games.length}/${games.length} games loaded)`;
+            const title = document.createElement('h3');
+            title.className = 'lesson-title';
+            title.textContent = game.title;
 
-    // Search behavior for the Home game cards
-    const searchBar = document.getElementById('searchBar');
-    searchBar.addEventListener('input', function () {
-        const query = searchBar.value.toLowerCase().trim();
-        document.querySelectorAll('.lesson-card').forEach(function (card) {
-            const title = card.getAttribute('data-title') || '';
-            card.style.display = title.startsWith(query) ? '' : 'none';
+            overlay.appendChild(title);
+            card.appendChild(img);
+            card.appendChild(overlay);
+            container.appendChild(card);
+        });
+
+        document.querySelector('.games-loaded').textContent =
+            `(${games.length}/${games.length} games loaded)`;
+    }
+
+    renderCards();
+
+    // ── SEARCH ───────────────────────────────────────────────────────
+    document.getElementById('searchBar').addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        document.querySelectorAll('.lesson-card').forEach(card => {
+            const t = card.getAttribute('data-title') || '';
+            const match = cfg.searchMode === 'contains'
+                ? t.includes(query)
+                : t.startsWith(query);
+            card.style.display = match ? '' : 'none';
         });
     });
 
-    // SPA navigation: buttons and sections
-    const pageButtons = document.querySelectorAll('.nav-button[data-page]');
+    // ── SPA NAVIGATION ───────────────────────────────────────────────
+    const pageButtons  = document.querySelectorAll('.nav-button[data-page]');
     const pageSections = document.querySelectorAll('.page-section');
 
     function showPage(page) {
         const selected = page || 'home';
-
-        // Show only the active page section
-        pageSections.forEach(section => {
-            section.classList.toggle('active', section.id === `${selected}-section`);
+        pageSections.forEach(s => {
+            s.classList.toggle('active', s.id === `${selected}-section`);
         });
-
-        // Highlight the active nav button
-        pageButtons.forEach(button => {
-            button.classList.toggle('active', button.dataset.page === selected);
+        pageButtons.forEach(b => {
+            b.classList.toggle('active', b.dataset.page === selected);
         });
-
-        // Update the URL hash without reloading the page
-        if (history.replaceState) {
-            history.replaceState(null, '', `#${selected}`);
-        } else {
-            window.location.hash = selected;
-        }
-
+        if (history.replaceState) history.replaceState(null, '', `#${selected}`);
+        else window.location.hash = selected;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    pageButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            showPage(button.dataset.page);
+    pageButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            showPage(btn.dataset.page);
         });
     });
 
-    // Keep page state in sync with the browser hash
-    window.addEventListener('hashchange', function() {
-        const current = window.location.hash.replace('#', '') || 'home';
-        showPage(current);
+    window.addEventListener('hashchange', () => {
+        showPage(window.location.hash.replace('#', '') || 'home');
     });
 
-    // Initialize page based on the current hash
-    const initialPage = window.location.hash.replace('#', '') || 'home';
-    showPage(initialPage);
+    // Load the correct page based on the URL hash
+    showPage(window.location.hash.replace('#', '') || 'home');
 });
