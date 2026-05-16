@@ -8,7 +8,7 @@ body {
 
 /* THEMES */
 [data-theme="dark"] {
-    --Zbg:      #090909;
+    --bg:      #090909;
     --text:    #f6f4ef;
     --muted:   #c9c2b7;
     --card-bg: rgba(90, 133, 183, 0.104);
@@ -146,14 +146,6 @@ header p {
     line-height: 1.75;
 }
 
-.header-wrapper {
-    max-width: 950px;
-    margin: 0 auto 40px;
-    padding: 20px;
-    border-radius: 18px;
-    backdrop-filter: blur(10px);
-}
-
 /* SEARCH BAR */
 .search-wrapper {
     display: flex;
@@ -194,9 +186,7 @@ header p {
     opacity: 0.88;
 }
 
-/* ============================================================
-   PAGE SECTIONS (show / hide)
-   ============================================================ */
+/* PAGE SECTIONS */
 .page-section {
     display: none;
     opacity: 0;
@@ -208,19 +198,50 @@ header p {
     display: block;
 }
 
-/* SETTINGS PANEL */
+/* GLASSMORPHISM CARDS */
 .settings-panel,
 .partners-panel,
 .header-wrapper,
 .cards-wrapper {
-    max-width: 900px;
+    max-width: 950px;
     margin: 0 auto 40px;
     padding: 24px 20px;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, rgba(24, 24, 24, 0.62), rgba(11, 11, 11, 0.5));
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
     border: 1px solid rgba(255, 255, 255, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dot grid pattern inside cards */
+.settings-panel::before,
+.partners-panel::before,
+.header-wrapper::before,
+.cards-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+        circle at 15px 15px,
+        rgba(21, 133, 194, 0.2) 2px,
+        transparent 2px
+    );
+    background-size: 30px 30px;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* Content sits above the dot grid */
+.settings-panel > *,
+.partners-panel > *,
+.header-wrapper > *,
+.cards-wrapper > * {
+    position: relative;
+    z-index: 1;
 }
 
 .settings-panel h2,
@@ -229,7 +250,7 @@ header p {
     color: var(--text, #f6f4ef);
 }
 
-/* Settings groups */
+/* SETTINGS GROUPS */
 .settings-group {
     margin: 22px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
@@ -414,14 +435,6 @@ header p {
 }
 
 /* GAME CARDS GRID */
-.cards-wrapper {
-    max-width: 950px;
-    margin: 0 auto 40px;
-    padding: 20px;
-    border-radius: 18px;
-    backdrop-filter: blur(10px);
-}
-
 .cards {
     display: flex;
     flex-wrap: wrap;
@@ -497,15 +510,12 @@ footer {
 }
 
 /* RESPONSIVE */
-
-/* Tablet: 2 cards per row */
 @media (max-width: 940px) {
     .lesson-card {
         flex: 1 1 calc(50% - 20px);
     }
 }
 
-/* Mobile: 1 card per row */
 @media (max-width: 620px) {
     .lesson-card {
         flex: 1 1 100%;
