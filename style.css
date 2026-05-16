@@ -151,7 +151,6 @@ header p {
     margin: 0 auto 40px;
     padding: 20px;
     border-radius: 18px;
-    background-color: var(--card-bg, rgba(90, 133, 183, 0.104));
     backdrop-filter: blur(10px);
 }
 
@@ -420,7 +419,6 @@ header p {
     margin: 0 auto 40px;
     padding: 20px;
     border-radius: 18px;
-    background-color: var(--card-bg, rgba(90, 133, 183, 0.104));
     backdrop-filter: blur(10px);
 }
 
