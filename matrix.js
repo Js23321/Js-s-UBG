@@ -110,7 +110,7 @@ function renderMatrix() {
         if (y > h && Math.random() > 0.972) {
             matrixState.drops[i] = 0;
         } else {
-            matrixState.drops[i] += 1.06; // exact same advance speed as reference
+            matrixState.drops[i] += 0.76; 
         }
     }
 
