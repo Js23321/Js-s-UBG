@@ -8,7 +8,7 @@ body {
 
 /* THEMES */
 [data-theme="dark"] {
-    --bg:      #090909;
+    --Zbg:      #090909;
     --text:    #f6f4ef;
     --muted:   #c9c2b7;
     --card-bg: rgba(90, 133, 183, 0.104);
@@ -45,6 +45,46 @@ body {
     --muted:   #cc9966;
     --card-bg: rgba(200, 80, 0, 0.1);
     --accent:  #ff6b35;
+}
+
+[data-theme="cyberpunk"] {
+    --bg:      #0d0015;
+    --text:    #ff99cc;
+    --muted:   #aa5588;
+    --card-bg: rgba(180, 0, 120, 0.1);
+    --accent:  #ff00aa;
+}
+
+[data-theme="neon"] {
+    --bg:      #0a0a0a;
+    --text:    #e0ffff;
+    --muted:   #5599aa;
+    --card-bg: rgba(0, 200, 255, 0.07);
+    --accent:  #00cfff;
+}
+
+[data-theme="retro"] {
+    --bg:      #0b0c1a;
+    --text:    #ffd700;
+    --muted:   #aa9944;
+    --card-bg: rgba(255, 200, 0, 0.07);
+    --accent:  #ffd700;
+}
+
+[data-theme="synthwave"] {
+    --bg:      #1a0533;
+    --text:    #f8c8ff;
+    --muted:   #aa77bb;
+    --card-bg: rgba(140, 0, 255, 0.1);
+    --accent:  #cc44ff;
+}
+
+[data-theme="military"] {
+    --bg:      #0a0f00;
+    --text:    #c8d89a;
+    --muted:   #778855;
+    --card-bg: rgba(60, 80, 0, 0.15);
+    --accent:  #aacc00;
 }
 
 /* NAVIGATION */
