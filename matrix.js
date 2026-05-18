@@ -110,7 +110,7 @@ function renderMatrix() {
         if (y > h && Math.random() > 0.972) {
             matrixState.drops[i] = 0;
         } else {
-            matrixState.drops[i] += 0.50; 
+            matrixState.drops[i] += 0.90; 
         }
     }
 
