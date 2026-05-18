@@ -1,169 +1,135 @@
-// matrix.js — standalone matrix background
-// Matches the exact effect from the reference site
+// matrix.js — extracted from the reference site's main.js
+
+const canvas = document.createElement('canvas');
+canvas.id = 'matrix-bg';
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+canvas.style.zIndex = '-1';
+canvas.setAttribute('aria-hidden', 'true');
+document.body.insertBefore(canvas, document.body.firstChild);
+
+const ctx = canvas.getContext('2d');
 
 const matrixState = {
-    canvas: null,
-    ctx: null,
     drops: [],
     columns: 0,
     fontSize: 14,
-    rafId: null,
+    resetFrames: 0,
     lastColorKey: ''
 };
 
-// Get the current accent color from CSS variables
+let rafId = null;
+
+function hexToRgbObject(hex) {
+    const cleanHex = (hex || '').replace('#', '');
+    if (!/^[0-9a-fA-F]{6}$/.test(cleanHex)) return { r: 21, g: 133, b: 194 };
+    return {
+        r: parseInt(cleanHex.slice(0, 2), 16),
+        g: parseInt(cleanHex.slice(2, 4), 16),
+        b: parseInt(cleanHex.slice(4, 6), 16)
+    };
+}
+
 function getMatrixColor() {
     const raw = getComputedStyle(document.documentElement)
         .getPropertyValue('--accent')
         .trim();
-    // Fall back to blue if not set
     return raw || '#1585c2';
 }
 
-// Convert a hex color to r,g,b object
-function hexToRgb(hex) {
-    const clean = hex.replace('#', '');
-    if (!/^[0-9a-fA-F]{6}$/.test(clean)) return { r: 21, g: 133, b: 194 };
-    return {
-        r: parseInt(clean.slice(0, 2), 16),
-        g: parseInt(clean.slice(2, 4), 16),
-        b: parseInt(clean.slice(4, 6), 16)
-    };
-}
-
-// Set up the drop positions for each column
-function initDrops() {
-    const cols = Math.max(1, Math.floor(window.innerWidth / matrixState.fontSize));
-    matrixState.columns = cols;
-    matrixState.drops = Array.from({ length: cols }, () =>
-        Math.floor(Math.random() * window.innerHeight / matrixState.fontSize)
-    );
-}
-
-// Resize the canvas to fill the window
 function resizeCanvas() {
-    const canvas = matrixState.canvas;
-    const ctx = matrixState.ctx;
-    if (!canvas || !ctx) return;
-
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-// The main render loop — called every animation frame
-function renderMatrix() {
-    const canvas = matrixState.canvas;
-    const ctx = matrixState.ctx;
-    if (!canvas || !ctx) return;
-
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+function initMatrixDrops(forceReset = false) {
     const fontSize = matrixState.fontSize;
-    const hex = getMatrixColor();
-    const colorKey = hex;
+    matrixState.columns = Math.max(1, Math.floor(window.innerWidth / fontSize));
+    matrixState.drops = Array.from({ length: matrixState.columns }, () =>
+        Math.floor((Math.random() * window.innerHeight) / fontSize)
+    );
+    if (forceReset) {
+        matrixState.resetFrames = 14;
+    }
+}
 
-    // If the theme color changed, reset everything
+function renderMatrix() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const hex = getMatrixColor();
+    const { r, g, b } = hexToRgbObject(hex);
+    const colorKey = `${r},${g},${b}`;
+
+    if (!matrixState.drops.length || matrixState.columns !== Math.max(1, Math.floor(width / matrixState.fontSize))) {
+        initMatrixDrops();
+    }
+
     if (matrixState.lastColorKey !== colorKey) {
         matrixState.lastColorKey = colorKey;
-        ctx.clearRect(0, 0, w, h);
-        initDrops();
+        matrixState.resetFrames = Math.max(matrixState.resetFrames, 22);
+        initMatrixDrops();
+        ctx.clearRect(0, 0, width, height);
     }
 
-    // Re-init columns if the window width changed
-    const expectedCols = Math.max(1, Math.floor(w / fontSize));
-    if (matrixState.columns !== expectedCols) {
-        initDrops();
-    }
+    const trailR = Math.max(2, Math.round(r * 0.1));
+    const trailG = Math.max(2, Math.round(g * 0.1));
+    const trailB = Math.max(2, Math.round(b * 0.1));
+    const clearingAlpha = matrixState.resetFrames > 0 ? 0.46 : 0.1;
 
-    const { r, g, b } = hexToRgb(hex);
+    ctx.fillStyle = `rgba(${trailR}, ${trailG}, ${trailB}, ${clearingAlpha})`;
+    ctx.fillRect(0, 0, width, height);
 
-    // FIX 1: Use pure black overlay for cleaner trail fade
-    ctx.fillStyle = `rgba(0, 0, 0, 0.15)`;
-    ctx.fillRect(0, 0, w, h);
-
-    // Draw each falling character
     ctx.fillStyle = `rgb(${Math.min(255, r + 14)}, ${Math.min(255, g + 14)}, ${Math.min(255, b + 14)})`;
-    ctx.font = fontSize + 'px monospace';
+    ctx.font = `${matrixState.fontSize}px monospace`;
 
     const chars = ['0', '1'];
+    const advance = 1.06;
 
     for (let i = 0; i < matrixState.drops.length; i++) {
-        // Pick a random 0 or 1
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        const y = matrixState.drops[i] * fontSize;
-
-        ctx.fillText(char, i * fontSize, y);
-
-        // Reset drop to top randomly once it hits the bottom
-        if (y > h && Math.random() > 0.972) {
+        const text = chars[(Math.random() * chars.length) | 0];
+        const y = matrixState.drops[i] * matrixState.fontSize;
+        ctx.fillText(text, i * matrixState.fontSize, y);
+        if (y > height && Math.random() > 0.972) {
             matrixState.drops[i] = 0;
         } else {
-            // FIX 2: Match exact speed from reference site
-            matrixState.drops[i] += 1.06;
+            matrixState.drops[i] += advance;
         }
     }
 
-    matrixState.rafId = requestAnimationFrame(renderMatrix);
+    if (matrixState.resetFrames > 0) {
+        matrixState.resetFrames -= 1;
+    }
+
+    rafId = requestAnimationFrame(renderMatrix);
 }
 
-// Start the matrix effect
-function startMatrix() {
-    // Create the canvas element
-    const canvas = document.createElement('canvas');
-    canvas.id = 'matrix-bg';
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.zIndex = '-1';
-    canvas.style.opacity = '1';
-    canvas.setAttribute('aria-hidden', 'true');
-
-    document.body.insertBefore(canvas, document.body.firstChild);
-
-    const ctx = canvas.getContext('2d');
-    matrixState.canvas = canvas;
-    matrixState.ctx = ctx;
-
-    resizeCanvas();
-    initDrops();
-
-    matrixState.rafId = requestAnimationFrame(renderMatrix);
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        initDrops();
-    });
-}
-
-// Update the matrix color when theme changes
-// Call this whenever you change theme in app.js
 function updateMatrixColor() {
-    matrixState.lastColorKey = ''; // force a color reset on next frame
+    matrixState.lastColorKey = '';
 }
 
-// Stop the matrix (cleanup)
 function stopMatrix() {
-    if (matrixState.rafId) {
-        cancelAnimationFrame(matrixState.rafId);
-        matrixState.rafId = null;
-    }
-    if (matrixState.canvas) {
-        matrixState.canvas.remove();
-        matrixState.canvas = null;
-        matrixState.ctx = null;
+    if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
     }
 }
 
-// Auto-start when the page loads
-document.addEventListener('DOMContentLoaded', startMatrix);
+window.addEventListener('resize', () => {
+    resizeCanvas();
+    initMatrixDrops(true);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    resizeCanvas();
+    initMatrixDrops(true);
+    rafId = requestAnimationFrame(renderMatrix);
+});
