@@ -28,5 +28,10 @@ const games = [
     title: "Drive Mad",
     url: "/games/6.html",
     image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/6.jpg"
+  },
+  {
+    title: "Level Devil",
+    url: "/games/7.html",
+    image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/7.jpg"
   }
 ];
