@@ -85,11 +85,7 @@ function renderMatrix() {
 
     const { r, g, b } = hexToRgb(hex);
 
-    // Draw a semi-transparent dark overlay to create the trail fade effect
-    // Using a very dark version of the accent color (like the reference site)
-    const trailR = Math.max(2, Math.round(r * 0.1));
-    const trailG = Math.max(2, Math.round(g * 0.1));
-    const trailB = Math.max(2, Math.round(b * 0.1));
+    // FIX 1: Use pure black overlay for cleaner trail fade
     ctx.fillStyle = `rgba(0, 0, 0, 0.15)`;
     ctx.fillRect(0, 0, w, h);
 
@@ -110,7 +106,8 @@ function renderMatrix() {
         if (y > h && Math.random() > 0.972) {
             matrixState.drops[i] = 0;
         } else {
-            matrixState.drops[i] += 1.06; 
+            // FIX 2: Match exact speed from reference site
+            matrixState.drops[i] += 1.06;
         }
     }
 
