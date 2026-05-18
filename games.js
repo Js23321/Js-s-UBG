@@ -33,5 +33,10 @@ const games = [
     title: "Level Devil",
     url: "/games/7.html",
     image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/7.jpg"
+  },
+  {
+    title: "Minecraft Case Sim",
+    url: "games/8.html",
+    image: "https://cdn.jsdelivr.net/gh/Js23321/Js-s-UBG@main/images/8.jpg"
   }
 ];
