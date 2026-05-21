@@ -17,40 +17,41 @@ body {
 }
 
 /* THEMES */
-/* VOID — deep space, cold blue-black */
-[data-theme="dark"] {
-    --bg:      #07090f;
-    --text:    #e8eaf6;
-    --muted:   #7986cb;
-    --card-bg: rgba(100, 140, 255, 0.07);
-    --accent:  #5c7cfa;
+
+/* DUSK — deep navy sky, soft blue text, golden accent like the sun glare */
+[data-theme="dusk"] {
+    --bg:      #0c1220;
+    --text:    #cfe4ff;
+    --muted:   #6a90b8;
+    --card-bg: rgba(61, 152, 182, 0.10);
+    --accent:  #f0a030;
 }
 
-/* PAPER — warm off-white, ink accents */
-[data-theme="light"] {
-    --bg:      #f5f0e8;
-    --text:    #1a1a1a;
-    --muted:   #8a7f72;
-    --card-bg: rgba(0, 0, 0, 0.05);
-    --accent:  #c0392b;
+/* OVERCAST — cool grey-blue, like a cloudy afternoon sky */
+[data-theme="overcast"] {
+    --bg:      #1a1f2e;
+    --text:    #dde6f0;
+    --muted:   #7a90a8;
+    --card-bg: rgba(120, 160, 200, 0.10);
+    --accent:  #5aaee0;
 }
 
-/* EMBER — burnt orange, smoky darks */
-[data-theme="sunset"] {
-    --bg:      #110a00;
-    --text:    #fde8c8;
-    --muted:   #b07040;
-    --card-bg: rgba(255, 120, 20, 0.08);
-    --accent:  #f07020;
+/* GOLDEN HOUR — warm amber sky, creamy text, deep sky blue accent */
+[data-theme="golden"] {
+    --bg:      #1a1000;
+    --text:    #ffecc8;
+    --muted:   #c09050;
+    --card-bg: rgba(200, 130, 30, 0.10);
+    --accent:  #245293;
 }
 
-/* VOID PURPLE — deep violet, electric accent */
-[data-theme="synthwave"] {
-    --bg:      #0e0818;
-    --text:    #ecdeff;
-    --muted:   #9060b0;
-    --card-bg: rgba(160, 60, 255, 0.08);
-    --accent:  #a855f7;
+/* MIDNIGHT — near-black sky, ice white text, bright cyan like a clear night */
+[data-theme="midnight"] {
+    --bg:      #080c14;
+    --text:    #e8f4ff;
+    --muted:   #4a6a8a;
+    --card-bg: rgba(30, 80, 140, 0.12);
+    --accent:  #38bdf8;
 }
 
 /* NAVIGATION */
