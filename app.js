@@ -3,7 +3,7 @@
     // ── SETTINGS STORE ──────────────────────────────────────────────
     // Default values for every setting
     const DEFAULTS = {
-        theme:      'dark',
+        theme:      'dusk',
         searchMode: 'starts',
         favicon:    '/images/cuh.png',
         tabTitle:   'Home - Classroom',
