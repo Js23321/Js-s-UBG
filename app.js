@@ -103,7 +103,6 @@
         btn.addEventListener('click', () => {
             saveSetting('theme', btn.dataset.theme);
             applyTheme(btn.dataset.theme);
-            updateMatrixColor();
         });
     });
 

@@ -6,6 +6,16 @@ body {
     font-family: 'Courier New', monospace;
 }
 
+/* VANTA BACKGROUND */
+#vanta-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
 /* THEMES */
 [data-theme="dark"] {
     --bg:      #090909;
@@ -504,7 +514,7 @@ header p {
 footer {
     text-align: center;
     padding: 20px;
-    background: var(--bg, #090909);
+    background: transparent;
     color: var(--muted, #c9c2b7);
     font-size: 0.9rem;
 }
