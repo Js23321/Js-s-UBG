@@ -17,84 +17,40 @@ body {
 }
 
 /* THEMES */
+/* VOID — deep space, cold blue-black */
 [data-theme="dark"] {
-    --bg:      #090909;
-    --text:    #f6f4ef;
-    --muted:   #c9c2b7;
-    --card-bg: rgba(90, 133, 183, 0.104);
-    --accent:  #1585c2;
+    --bg:      #07090f;
+    --text:    #e8eaf6;
+    --muted:   #7986cb;
+    --card-bg: rgba(100, 140, 255, 0.07);
+    --accent:  #5c7cfa;
 }
 
+/* PAPER — warm off-white, ink accents */
 [data-theme="light"] {
-    --bg:      #f0f0f0;
-    --text:    #111111;
-    --muted:   #555555;
-    --card-bg: rgba(0, 0, 0, 0.06);
-    --accent:  #1585c2;
+    --bg:      #f5f0e8;
+    --text:    #1a1a1a;
+    --muted:   #8a7f72;
+    --card-bg: rgba(0, 0, 0, 0.05);
+    --accent:  #c0392b;
 }
 
-[data-theme="amoled"] {
-    --bg:      #000000;
-    --text:    #ffffff;
-    --muted:   #aaaaaa;
-    --card-bg: rgba(255, 255, 255, 0.04);
-    --accent:  #00cfff;
-}
-
-[data-theme="forest"] {
-    --bg:      #0e1a0e;
-    --text:    #d4edda;
-    --muted:   #90b898;
-    --card-bg: rgba(50, 120, 50, 0.12);
-    --accent:  #4caf50;
-}
-
+/* EMBER — burnt orange, smoky darks */
 [data-theme="sunset"] {
-    --bg:      #1a0a00;
-    --text:    #ffe4c4;
-    --muted:   #cc9966;
-    --card-bg: rgba(200, 80, 0, 0.1);
-    --accent:  #ff6b35;
+    --bg:      #110a00;
+    --text:    #fde8c8;
+    --muted:   #b07040;
+    --card-bg: rgba(255, 120, 20, 0.08);
+    --accent:  #f07020;
 }
 
-[data-theme="cyberpunk"] {
-    --bg:      #0d0015;
-    --text:    #ff99cc;
-    --muted:   #aa5588;
-    --card-bg: rgba(180, 0, 120, 0.1);
-    --accent:  #ff00aa;
-}
-
-[data-theme="neon"] {
-    --bg:      #0a0a0a;
-    --text:    #e0ffff;
-    --muted:   #5599aa;
-    --card-bg: rgba(0, 200, 255, 0.07);
-    --accent:  #00cfff;
-}
-
-[data-theme="retro"] {
-    --bg:      #0b0c1a;
-    --text:    #ffd700;
-    --muted:   #aa9944;
-    --card-bg: rgba(255, 200, 0, 0.07);
-    --accent:  #ffd700;
-}
-
+/* VOID PURPLE — deep violet, electric accent */
 [data-theme="synthwave"] {
-    --bg:      #1a0533;
-    --text:    #f8c8ff;
-    --muted:   #aa77bb;
-    --card-bg: rgba(140, 0, 255, 0.1);
-    --accent:  #cc44ff;
-}
-
-[data-theme="military"] {
-    --bg:      #0a0f00;
-    --text:    #c8d89a;
-    --muted:   #778855;
-    --card-bg: rgba(60, 80, 0, 0.15);
-    --accent:  #aacc00;
+    --bg:      #0e0818;
+    --text:    #ecdeff;
+    --muted:   #9060b0;
+    --card-bg: rgba(160, 60, 255, 0.08);
+    --accent:  #a855f7;
 }
 
 /* NAVIGATION */
@@ -216,42 +172,14 @@ header p {
     max-width: 950px;
     margin: 0 auto 40px;
     padding: 24px 20px;
-    border-radius: 18px;
-    background: linear-gradient(145deg, rgba(24, 24, 24, 0.62), rgba(11, 11, 11, 0.5));
+    border-radius: 16px;
+    background: rgba(225, 255, 255, 0.1);
     box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(10px) saturate(1.1);
-    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.18);
     position: relative;
     overflow: hidden;
-}
-
-/* Dot grid pattern inside cards */
-.settings-panel::before,
-.partners-panel::before,
-.header-wrapper::before,
-.cards-wrapper::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(
-        circle at 15px 15px,
-        rgba(21, 133, 194, 0.2) 2px,
-        transparent 2px
-    );
-    background-size: 30px 30px;
-    border-radius: inherit;
-    z-index: 0;
-}
-
-/* Content sits above the dot grid */
-.settings-panel > *,
-.partners-panel > *,
-.header-wrapper > *,
-.cards-wrapper > * {
-    position: relative;
-    z-index: 1;
 }
 
 .settings-panel h2,
